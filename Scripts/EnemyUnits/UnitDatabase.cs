@@ -72,4 +72,13 @@ public class UnitDatabase : MonoBehaviour
             }
         }
     }
+
+    public bool IsEmpty()
+    {
+        if (nodeEnemymovementsMap.Count < 1)
+        {
+            return true;
+        }
+        return false;
+    }
 }

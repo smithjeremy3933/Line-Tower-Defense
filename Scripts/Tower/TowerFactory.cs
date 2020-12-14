@@ -19,11 +19,13 @@ public class TowerFactory : MonoBehaviour
             GameObject instance = Instantiate(fireTower, node.position, Quaternion.identity, this.transform);
             TowerView towerView = instance.GetComponent<TowerView>();
             TowerHealth towerHealth = instance.GetComponent<TowerHealth>();
+            TowerAttack towerAttack = instance.GetComponent<TowerAttack>();
             if (towerView != null)
             {
                 Tower tower = new Tower(node);
                 towerView.Init(tower);
                 towerHealth.Init(tower);
+                towerAttack.Init(tower);
                 tower.name = towerView.name;
                 towerDatabase.AddTowerHealth(towerHealth);
                 towerDatabase.AddTower(node, tower);

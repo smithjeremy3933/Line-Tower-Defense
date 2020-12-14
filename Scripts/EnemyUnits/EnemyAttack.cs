@@ -10,7 +10,7 @@ public class EnemyAttack : MonoBehaviour
     float timeBetweenAttacks = 1f;
     float timeSinceLastAttack = Mathf.Infinity;
 
-    public TowerHealth Target { get => target; set => target = value; }
+    public TowerHealth Target { get => target; }
 
     private void Update()
     {
@@ -28,5 +28,22 @@ public class EnemyAttack : MonoBehaviour
                 target.TakeDamage(damage);
             }
         }
+    }
+
+    public void SetTarget(TowerHealth towerHealth)
+    {
+        if (towerHealth != null)
+        {
+            target = towerHealth;
+        }
+    }
+
+    public bool IsTarget()
+    {
+        if (target != null)
+        {
+            return true;
+        }
+        return false;
     }
 }

@@ -6,9 +6,8 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject enemyViewGO;
     float secsBetweenSpawnTime = 1f;
-    int numberOfEnemies = 10;
 
-    public IEnumerator Init(Node startNode)
+    public IEnumerator Init(Node startNode, int numberOfEnemies)
     {
         UnitDatabase unitDatabase = FindObjectOfType<UnitDatabase>();
 

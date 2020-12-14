@@ -18,7 +18,7 @@ public class EnemyMovement : MonoBehaviour
     readonly float moveSpeed = 1.25f;
     readonly float delay = 0.5f;
     readonly float distThreshold = 0.01f;
-    public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;  
+    iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;  
 
     private void Start()
     {

@@ -27,43 +27,27 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        if (enemyAttack.Target != null)
+        if (enemyAttack.IsTarget())
         {
-            enemyAttack.Attack(enemyAttack.Target);
+            AttackBehavior();
             return;
         }
-
-        if (enemyAttack.Target == null && isAttacking)
+        else if (!enemyAttack.IsTarget() && isAttacking)
         {
-            Debug.Log("There is no target but i am still in attack mode.");
-            GetComponent<Animator>().SetBool("punch", false);
-            isPathToGoal = true;
-            needsPathRecalc = true;
-            isAttacking = false;
+            CancelAttackBehavior();
         }
-
-        if (isAttacking) return;
-
-        if (isPathToGoal && needsPathRecalc && !isMoving && !isAttacking)
+        else if (isAttacking)
         {
-            enemyPathfinder.RecalcPath(m_goalNode);
             return;
         }
-
-        if (!isPathToGoal && needsPathRecalc && !isMoving && !isAttacking)
+        else if (isPathToGoal && needsPathRecalc && !isMoving && !isAttacking)
         {
-            Debug.Log("No path to goal");
-            isAttacking = true;
-            Tower closestTower = towerDatabase.FindClosestTower(currentNode);
-            Node closestNodeToTower = FindClosestNodeToTower(closestTower);
-            if (closestTower != null && closestNodeToTower != null)
-            {
-                enemyPathfinder.RecalcPath(closestNodeToTower);
-                isPathToGoal = false;
-                needsPathRecalc = false;
-                enemyMovement.FaceDestination(closestTower.node);
-                enemyAttack.Target = towerDatabase.GetTowerHealth(closestTower);
-            }
+            PathfindToGoalBehavior();
+            return;
+        }
+        else if (!isPathToGoal && needsPathRecalc && !isMoving && !isAttacking)
+        {
+            PathfindToClosestTowerBehavior();
         }
     }
 
@@ -71,7 +55,7 @@ public class EnemyController : MonoBehaviour
     {
         enemyAttack = GetComponent<EnemyAttack>();
         enemyMovement = GetComponent<EnemyMovement>();
-        enemyPathfinder = GetComponent<EnemyPathfinder>(); 
+        enemyPathfinder = GetComponent<EnemyPathfinder>();
         tileController = FindObjectOfType<TileController>();
         towerDatabase = FindObjectOfType<TowerDatabase>();
         m_graph = FindObjectOfType<Graph>();
@@ -80,6 +64,41 @@ public class EnemyController : MonoBehaviour
         enemyPathfinder.InitForUnitPathfinding();
         enemyPathfinder.SearchRoutine(m_goalNode);
         TowerFactory.OnTowerSpawned += TowerFactory_OnTowerSpawned;
+    }
+
+    private void AttackBehavior()
+    {
+        enemyAttack.Attack(enemyAttack.Target);
+    }
+
+    private void CancelAttackBehavior()
+    {
+        Debug.Log("There is no target but i am still in attack mode.");
+        GetComponent<Animator>().SetBool("punch", false);
+        isPathToGoal = true;
+        needsPathRecalc = true;
+        isAttacking = false;
+    }
+
+    private void PathfindToClosestTowerBehavior()
+    {
+        Debug.Log("No path to goal");
+        isAttacking = true;
+        Tower closestTower = towerDatabase.FindClosestTower(currentNode);
+        Node closestNodeToTower = FindClosestNodeToTower(closestTower);
+        if (closestTower != null && closestNodeToTower != null)
+        {
+            enemyPathfinder.RecalcPath(closestNodeToTower);
+            isPathToGoal = false;
+            needsPathRecalc = false;
+            enemyMovement.FaceDestination(closestTower.node);
+            enemyAttack.SetTarget(towerDatabase.GetTowerHealth(closestTower));
+        }
+    }
+
+    private void PathfindToGoalBehavior()
+    {
+        enemyPathfinder.RecalcPath(m_goalNode);
     }
 
     private void TowerFactory_OnTowerSpawned(object sender, System.EventArgs e)
