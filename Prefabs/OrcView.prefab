@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 638909899625030575}
   - component: {fileID: 5972711752709928275}
   - component: {fileID: 3545754074842335651}
-  - component: {fileID: 4572376998556510859}
+  - component: {fileID: 1088951886154347699}
   - component: {fileID: 4213090344078135402}
+  - component: {fileID: 1354362410238742255}
   m_Layer: 0
   m_Name: OrcView
   m_TagString: Untagged
@@ -68,7 +69,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf28635566f91b543be70e6f99db41e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  easeType: 17
 --- !u!114 &5972711752709928275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49afeae23f9a9c46ad178ed3b9dd3e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4572376998556510859
+--- !u!114 &1088951886154347699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1339481635117626315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6035d46c77a7dc74f890b7bb21c9e86d, type: 3}
+  m_Script: {fileID: 11500000, guid: bb0760aa118dc174b845298039ef7ada, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &4213090344078135402
@@ -119,6 +119,22 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &1354362410238742255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339481635117626315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6035d46c77a7dc74f890b7bb21c9e86d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMoving: 0
+  needsPathRecalc: 0
+  isPathToGoal: 1
+  isAttacking: 0
 --- !u!1001 &1339481635963061486
 PrefabInstance:
   m_ObjectHideFlags: 0

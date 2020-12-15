@@ -13,16 +13,25 @@ public class EnemyMovement : MonoBehaviour
         public Node newNode;
     }
 
+    Unit m_unit;
+
     EnemyController enemyController;
     readonly float rotateTime = 1f;
     readonly float moveSpeed = 1.25f;
     readonly float delay = 0.5f;
     readonly float distThreshold = 0.01f;
-    iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;  
+    iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
+
+    public Unit Unit { get => m_unit; }
 
     private void Start()
     {
         enemyController = GetComponent<EnemyController>();
+    }
+
+    public void Init(Unit unit)
+    {
+        m_unit = unit;
     }
 
     public IEnumerator FollowPath(List<Node> path)

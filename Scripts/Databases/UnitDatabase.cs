@@ -4,28 +4,56 @@ using UnityEngine;
 
 public class UnitDatabase : MonoBehaviour
 {
-    Dictionary<EnemyMovement, Node> enemymovementNodeMap = new Dictionary<EnemyMovement, Node>();
     Dictionary<Node, List<EnemyMovement>> nodeEnemymovementsMap = new Dictionary<Node, List<EnemyMovement>>();
+    List<Unit> unitsList = new List<Unit>();
 
     private void Start()
     {
         EnemyMovement.OnEnemyMoved += EnemyMovement_OnEnemyMoved;
     }
 
-    public void AddNewEnemy(EnemyMovement enemyMovement, Node startNode)
+    public List<Node> GetNodesWithEnemies()
     {
-        if (!nodeEnemymovementsMap.ContainsKey(startNode))
+        List<Node> nodesWithEnemies = new List<Node>();
+        foreach (Node node in nodeEnemymovementsMap.Keys)
         {
-            enemymovementNodeMap.Add(enemyMovement, startNode);
+            nodesWithEnemies.Add(node);
+        }
+        return nodesWithEnemies;
+    }
 
-            List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
-            enemyMovements.Add(enemyMovement);
-            nodeEnemymovementsMap.Add(startNode, enemyMovements);
-        }
-        else
+    Unit GetUnitFromEnemyMovement(EnemyMovement enemyMovement)
+    {
+        if (enemyMovement != null)
         {
-            nodeEnemymovementsMap[startNode].Add(enemyMovement);
+            foreach (Unit unit in unitsList)
+            {
+                if (enemyMovement.Unit == unit)
+                {
+                    return unit;
+                }
+            }
         }
+        return null;
+    }
+
+    public void AddNewEnemy(EnemyMovement enemyMovement, Node startNode, Unit enemyUnit)
+    {
+        if (enemyMovement != null && startNode != null && enemyUnit != null)
+        {
+            unitsList.Add(enemyUnit);
+
+            if (!nodeEnemymovementsMap.ContainsKey(startNode))
+            {
+                List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
+                enemyMovements.Add(enemyMovement);
+                nodeEnemymovementsMap.Add(startNode, enemyMovements);
+            }
+            else
+            {
+                nodeEnemymovementsMap[startNode].Add(enemyMovement);
+            }
+        }     
     }
 
     public bool IsEnemyInArea(Node node)
@@ -51,9 +79,9 @@ public class UnitDatabase : MonoBehaviour
     {
         if (enemyMovement != null || oldNode != null || newNode != null)
         {
-            enemymovementNodeMap.Remove(enemyMovement);
-            enemymovementNodeMap[enemyMovement] = newNode;
-            
+            Unit unit = GetUnitFromEnemyMovement(enemyMovement);
+            unit.node = newNode;
+            unit.position = newNode.position;
             nodeEnemymovementsMap[oldNode].Remove(enemyMovement);
             if (nodeEnemymovementsMap[oldNode].Count < 1)
             {

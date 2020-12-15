@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    Unit m_unit;
+
     EnemyAttack enemyAttack;
     EnemyMovement enemyMovement;
     EnemyPathfinder enemyPathfinder;
@@ -20,9 +22,11 @@ public class EnemyController : MonoBehaviour
     public bool isPathToGoal = true;
     public bool isAttacking = false;
 
+    public Unit Unit { get => m_unit; }
+
     private void Start()
     {
-        Init();
+        InitBehaviors();
     }
 
     private void Update()
@@ -51,7 +55,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void Init()
+    public void Init(Unit unit)
+    {
+        m_unit = unit;
+    }
+
+    private void InitBehaviors()
     {
         enemyAttack = GetComponent<EnemyAttack>();
         enemyMovement = GetComponent<EnemyMovement>();
@@ -109,7 +118,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    Node FindClosestNodeToTower(Tower closestTower)
+    private Node FindClosestNodeToTower(Tower closestTower)
     {
         if (closestTower != null)
         {

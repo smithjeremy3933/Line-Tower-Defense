@@ -16,8 +16,12 @@ public class EnemySpawner : MonoBehaviour
             if (enemyViewGO != null && startNode.position != null)
             {
                 GameObject instance = Instantiate(enemyViewGO, startNode.position, Quaternion.identity, this.transform);
+                Unit unit = new Unit(startNode);
+                EnemyController enemyController = instance.GetComponent<EnemyController>();
                 EnemyMovement enemyMovement = instance.GetComponent<EnemyMovement>();
-                unitDatabase.AddNewEnemy(enemyMovement, startNode);
+                enemyController.Init(unit);
+                enemyMovement.Init(unit);
+                unitDatabase.AddNewEnemy(enemyMovement, startNode, unit);
                 numberOfEnemies--;
             }
             yield return new WaitForSeconds(secsBetweenSpawnTime);
