@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     EnemyAttack enemyAttack;
     EnemyMovement enemyMovement;
     EnemyPathfinder enemyPathfinder;
+    EnemyHealth enemyHealth;
 
     TileController tileController;
     TowerDatabase towerDatabase;
@@ -21,6 +22,7 @@ public class EnemyController : MonoBehaviour
     public bool needsPathRecalc = false;
     public bool isPathToGoal = true;
     public bool isAttacking = false;
+    public bool hasReachedGoal = false;
 
     public Unit Unit { get => m_unit; }
 
@@ -31,6 +33,12 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        if (currentNode == m_goalNode)
+        {
+            enemyHealth.ReachedGoal();
+            return;
+        }
+
         if (enemyAttack.IsTarget())
         {
             AttackBehavior();
@@ -65,6 +73,7 @@ public class EnemyController : MonoBehaviour
         enemyAttack = GetComponent<EnemyAttack>();
         enemyMovement = GetComponent<EnemyMovement>();
         enemyPathfinder = GetComponent<EnemyPathfinder>();
+        enemyHealth = GetComponent<EnemyHealth>();
         tileController = FindObjectOfType<TileController>();
         towerDatabase = FindObjectOfType<TowerDatabase>();
         m_graph = FindObjectOfType<Graph>();

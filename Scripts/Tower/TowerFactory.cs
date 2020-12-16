@@ -20,12 +20,15 @@ public class TowerFactory : MonoBehaviour
             TowerView towerView = instance.GetComponent<TowerView>();
             TowerHealth towerHealth = instance.GetComponent<TowerHealth>();
             TowerAttack towerAttack = instance.GetComponent<TowerAttack>();
+            BulletsView bulletsView = instance.GetComponentInChildren<BulletsView>();
             if (towerView != null)
             {
                 Tower tower = new Tower(node);
+                Bullets bullets = new Bullets(tower);
                 towerView.Init(tower);
                 towerHealth.Init(tower);
                 towerAttack.Init(tower);
+                bulletsView.Init(bullets);
                 tower.name = towerView.name;
                 towerDatabase.AddTowerHealth(towerHealth);
                 towerDatabase.AddTower(node, tower);

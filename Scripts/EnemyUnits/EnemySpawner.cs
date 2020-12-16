@@ -6,11 +6,12 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject enemyViewGO;
     float secsBetweenSpawnTime = 1f;
+    bool isSpawning = false;
 
     public IEnumerator Init(Node startNode, int numberOfEnemies)
     {
         UnitDatabase unitDatabase = FindObjectOfType<UnitDatabase>();
-
+        isSpawning = true;
         while (numberOfEnemies != 0)
         {
             if (enemyViewGO != null && startNode.position != null)
@@ -25,6 +26,16 @@ public class EnemySpawner : MonoBehaviour
                 numberOfEnemies--;
             }
             yield return new WaitForSeconds(secsBetweenSpawnTime);
-        }      
+        }
+        isSpawning = false;
+    }
+
+    public bool IsSpawning()
+    {
+        if (isSpawning)
+        {
+            return true;
+        }
+        return false;
     }
 }

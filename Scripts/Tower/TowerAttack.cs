@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class TowerAttack : MonoBehaviour
 {
-    [SerializeField] Transform turret;
+    [SerializeField] GameObject turret;
+    [SerializeField] ParticleSystem projectileParticle;
 
     Tower m_tower;
     UnitDatabase unitDatabase;
 
     float attackRange;
     int damage;
-    readonly float rotateTime = 1f;
+    readonly float rotateTime = 0.4f;
     float delay = 0f;
     iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
     Transform target;
@@ -24,11 +25,11 @@ public class TowerAttack : MonoBehaviour
 
     private void Update()
     {
-        //SetTargetEnemy();
-        //if (target)
-        //{
-        //    RotateToEnemy(target);
-        //}
+        SetTargetEnemy();
+        if (target)
+        {
+            RotateToEnemy(target);
+        }
     }
 
     private void SetTargetEnemy()
@@ -51,13 +52,13 @@ public class TowerAttack : MonoBehaviour
         m_tower = tower;
     }
 
-    public void RotateToEnemy(Transform transform)
+    public void RotateToEnemy(Transform target)
     {
-        Vector3 relativePos = transform.position - transform.position;
+        Vector3 relativePos = target.position - transform.position;
         Quaternion newRot = Quaternion.LookRotation(relativePos, Vector3.up);
         float newY = newRot.eulerAngles.y;
 
-        iTween.RotateTo(gameObject, iTween.Hash(
+        iTween.RotateTo(turret, iTween.Hash(
             "y", newY,
             "delay", delay,
             "easetype", easeType,

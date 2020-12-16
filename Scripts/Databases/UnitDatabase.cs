@@ -10,6 +10,7 @@ public class UnitDatabase : MonoBehaviour
     private void Start()
     {
         EnemyMovement.OnEnemyMoved += EnemyMovement_OnEnemyMoved;
+        EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
     }
 
     public List<Node> GetNodesWithEnemies()
@@ -20,21 +21,6 @@ public class UnitDatabase : MonoBehaviour
             nodesWithEnemies.Add(node);
         }
         return nodesWithEnemies;
-    }
-
-    Unit GetUnitFromEnemyMovement(EnemyMovement enemyMovement)
-    {
-        if (enemyMovement != null)
-        {
-            foreach (Unit unit in unitsList)
-            {
-                if (enemyMovement.Unit == unit)
-                {
-                    return unit;
-                }
-            }
-        }
-        return null;
     }
 
     public void AddNewEnemy(EnemyMovement enemyMovement, Node startNode, Unit enemyUnit)
@@ -53,7 +39,7 @@ public class UnitDatabase : MonoBehaviour
             {
                 nodeEnemymovementsMap[startNode].Add(enemyMovement);
             }
-        }     
+        }
     }
 
     public bool IsEnemyInArea(Node node)
@@ -70,12 +56,64 @@ public class UnitDatabase : MonoBehaviour
         return false;
     }
 
+    public bool IsEmpty()
+    {
+        if (unitsList.Count < 1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void EnemyHealth_OnEnemyDeath(object sender, EnemyHealth.OnEnemyDeathEventArgs e)
+    {
+        RemoveEnemy(e.enemyMovement);
+    }
+
+    private void RemoveEnemy(EnemyMovement enemyMovement)
+    {
+        if (enemyMovement == null) return;
+        Unit unit = GetUnitFromEnemyMovement(enemyMovement);
+        Node currentNode = unit.node;
+        foreach (Node node in nodeEnemymovementsMap.Keys)
+        {
+            if (currentNode == node)
+            {
+                foreach (EnemyMovement enemy in nodeEnemymovementsMap[node])
+                {
+                    if (enemyMovement == enemy)
+                    {
+                        nodeEnemymovementsMap[node].Remove(enemy);
+                        unitsList.Remove(unit);
+                        Debug.Log("Removed enemy from map after death");
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private Unit GetUnitFromEnemyMovement(EnemyMovement enemyMovement)
+    {
+        if (enemyMovement != null)
+        {
+            foreach (Unit unit in unitsList)
+            {
+                if (enemyMovement.Unit == unit)
+                {
+                    return unit;
+                }
+            }
+        }
+        return null;
+    }
+
     private void EnemyMovement_OnEnemyMoved(object sender, EnemyMovement.OnEnemyMovedEventArgs e)
     {
         UpdateMovement(e.enemyMovement, e.oldNode, e.newNode);
     }
 
-    void UpdateMovement(EnemyMovement enemyMovement,Node oldNode, Node newNode)
+    private void UpdateMovement(EnemyMovement enemyMovement,Node oldNode, Node newNode)
     {
         if (enemyMovement != null || oldNode != null || newNode != null)
         {
@@ -99,14 +137,5 @@ public class UnitDatabase : MonoBehaviour
                 nodeEnemymovementsMap.Add(newNode, enemyMovements);
             }
         }
-    }
-
-    public bool IsEmpty()
-    {
-        if (nodeEnemymovementsMap.Count < 1)
-        {
-            return true;
-        }
-        return false;
     }
 }

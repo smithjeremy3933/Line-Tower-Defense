@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public static event EventHandler<OnEnemyDeathEventArgs> OnEnemyDeath;
+    public class OnEnemyDeathEventArgs : EventArgs
+    {
+        public EnemyMovement enemyMovement;
+    }
+
     int health = 100;
 
     public void TakeDamage(int damage)
@@ -17,8 +21,24 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void ReachedGoal()
     {
+        OnEnemyDeath?.Invoke(this, new OnEnemyDeathEventArgs { enemyMovement = gameObject.GetComponent<EnemyMovement>() });
         Destroy(gameObject);
+    }
+
+    void Die()
+    {
+        OnEnemyDeath?.Invoke(this, new OnEnemyDeathEventArgs { enemyMovement = gameObject.GetComponent<EnemyMovement>() });
+        Destroy(gameObject);
+    }
+
+    private void OnParticleCollision(GameObject particle)
+    {
+        BulletsView bulletsView = particle.GetComponent<BulletsView>();
+        if (bulletsView != null)
+        {
+            TakeDamage(bulletsView.damage);
+        }      
     }
 }
