@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     List<Wave> waves = new List<Wave>();
     UnitDatabase unitDatabase;
 
+    int lives = 10;
+    int money = 500;
     int startingWaveIdx = 0;
     float timeBetweenWaves = 10f;
     int numberOfWaves = 10;
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        EnemyHealth.OnEnemyScored += EnemyHealth_OnEnemyScored;
+        EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
         SpawnEnemies(startingWaveIdx);
     }
 
@@ -47,6 +51,22 @@ public class GameManager : MonoBehaviour
                 RestartTimers();
             }         
         }
+    }
+
+    public void DecreaseMoney(TowerView tower)
+    {
+        if (tower == null) return;
+        money -= tower.Cost;
+    }
+
+    private void EnemyHealth_OnEnemyDeath(object sender, EnemyHealth.OnEnemyDeathEventArgs e)
+    {
+        money += 100;
+    }
+
+    private void EnemyHealth_OnEnemyScored(object sender, EventArgs e)
+    {
+        lives--;
     }
 
     private void SpawnEnemies(int waveIdx)

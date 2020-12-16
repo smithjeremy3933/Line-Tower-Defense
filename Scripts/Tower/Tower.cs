@@ -8,8 +8,9 @@ public class Tower
     public Node node;
     public string name;
     public int health = 100;
-    public float attackRange = 10f;
+    public float attackRange = 3f;
     public int damage = 5;
+    public int cost = 200;
 
     public Tower(Node node)
     {

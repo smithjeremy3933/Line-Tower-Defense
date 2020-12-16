@@ -6,10 +6,12 @@ public class TowerFactory : MonoBehaviour
     [SerializeField] GameObject fireTower;
     public static event EventHandler OnTowerSpawned;
     TowerDatabase towerDatabase;
+    GameManager gameManager;
 
     private void Start()
     {
         towerDatabase = FindObjectOfType<TowerDatabase>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     public void SpawnTower(Node node)
@@ -32,6 +34,7 @@ public class TowerFactory : MonoBehaviour
                 tower.name = towerView.name;
                 towerDatabase.AddTowerHealth(towerHealth);
                 towerDatabase.AddTower(node, tower);
+                gameManager.DecreaseMoney(towerView);
             }
             node.nodeType = NodeType.Blocked;
 

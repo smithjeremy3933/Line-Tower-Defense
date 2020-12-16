@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public static event EventHandler OnEnemyScored;
     public static event EventHandler<OnEnemyDeathEventArgs> OnEnemyDeath;
     public class OnEnemyDeathEventArgs : EventArgs
     {
@@ -14,7 +15,6 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health = Mathf.Max(health - damage, 0);
-        Debug.Log(health);
         if (health <= 0)
         {
             Die();
@@ -24,6 +24,7 @@ public class EnemyHealth : MonoBehaviour
     public void ReachedGoal()
     {
         OnEnemyDeath?.Invoke(this, new OnEnemyDeathEventArgs { enemyMovement = gameObject.GetComponent<EnemyMovement>() });
+        OnEnemyScored?.Invoke(this, EventArgs.Empty);
         Destroy(gameObject);
     }
 

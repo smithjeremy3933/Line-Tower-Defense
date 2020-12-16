@@ -29,6 +29,11 @@ public class TowerAttack : MonoBehaviour
         if (target)
         {
             RotateToEnemy(target);
+            FireAtEnemy();
+        }
+        else
+        {
+            Shoot(false);
         }
     }
 
@@ -76,5 +81,24 @@ public class TowerAttack : MonoBehaviour
             return transformA;
         }
         return transformB;
+    }
+
+    private void FireAtEnemy()
+    {
+        float distanceToEnemy = Vector3.Distance(target.position, gameObject.transform.position);
+        if (distanceToEnemy <= attackRange)
+        {
+            Shoot(true);
+        }
+        else
+        {
+            Shoot(false);
+        }
+    }
+
+    private void Shoot(bool isActive)
+    {
+        var emissionModule = projectileParticle.emission;
+        emissionModule.enabled = isActive;
     }
 }
