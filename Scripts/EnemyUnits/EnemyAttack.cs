@@ -1,49 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LTD.Towers;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour
+namespace LTD.EnemyUnits
 {
-    TowerHealth target = null;
-
-    int damage = 5;
-    float timeBetweenAttacks = 1f;
-    float timeSinceLastAttack = Mathf.Infinity;
-
-    public TowerHealth Target { get => target; }
-
-    private void Update()
+    public class EnemyAttack : MonoBehaviour
     {
-        timeSinceLastAttack += Time.deltaTime;
-    }
+        TowerHealth target = null;
 
-    public void Attack(TowerHealth target)
-    {
-        if (target != null)
+        int damage = 5;
+        float timeBetweenAttacks = 1f;
+        float timeSinceLastAttack = Mathf.Infinity;
+
+        public TowerHealth Target { get => target; }
+
+        private void Update()
         {
-            GetComponent<Animator>().SetBool("punch", true);
-            if (timeSinceLastAttack > timeBetweenAttacks)
+            timeSinceLastAttack += Time.deltaTime;
+        }
+
+        public void Attack(TowerHealth target)
+        {
+            if (target != null)
             {
-                timeSinceLastAttack = 0;
-                target.TakeDamage(damage);
+                GetComponent<Animator>().SetBool("punch", true);
+                if (timeSinceLastAttack > timeBetweenAttacks)
+                {
+                    timeSinceLastAttack = 0;
+                    target.TakeDamage(damage);
+                }
             }
         }
-    }
 
-    public void SetTarget(TowerHealth towerHealth)
-    {
-        if (towerHealth != null)
+        public void SetTarget(TowerHealth towerHealth)
         {
-            target = towerHealth;
+            if (towerHealth != null)
+            {
+                target = towerHealth;
+            }
+        }
+
+        public bool IsTarget()
+        {
+            if (target != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 
-    public bool IsTarget()
-    {
-        if (target != null)
-        {
-            return true;
-        }
-        return false;
-    }
 }

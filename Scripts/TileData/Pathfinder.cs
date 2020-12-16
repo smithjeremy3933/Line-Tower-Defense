@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using LTD.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +12,7 @@ public class Pathfinder : MonoBehaviour
 
     PriorityQueue<Node> m_frontierNodes;
     List<Node> m_exploredNodes;
-    List<Node> m_pathNodes;
-    public List<Node> PathNodes { get { return m_pathNodes; } }
+    public List<Node> PathNodes { get; private set; }
 
     public Color startColor = Color.green;
     public Color goalColor = Color.red;
@@ -44,7 +43,7 @@ public class Pathfinder : MonoBehaviour
         m_frontierNodes = new PriorityQueue<Node>();
         m_frontierNodes.Enqueue(start);
         m_exploredNodes = new List<Node>();
-        m_pathNodes = new List<Node>();
+        PathNodes = new List<Node>();
 
         for (int x = 0; x < m_graph.Width; x++)
         {
@@ -99,7 +98,7 @@ public class Pathfinder : MonoBehaviour
 
                 if (m_frontierNodes.Contains(m_goalNode))
                 {
-                    m_pathNodes = GetPathNodes(m_goalNode);
+                    PathNodes = GetPathNodes(m_goalNode);
                     if (exitOnGoal)
                     {
                         isComplete = true;

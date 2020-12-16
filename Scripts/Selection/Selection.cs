@@ -1,27 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Selection : MonoBehaviour
+namespace LTD.Controller
 {
-    GameObject selectedObject;
-
-    public void SetSelectedObject(GameObject go)
+    public class Selection : MonoBehaviour
     {
-        if (selectedObject != go)
+        GameObject selectedObject;
+
+        public void SetSelectedObject(GameObject go)
         {
-            selectedObject = go;
-            //Debug.Log("Selected GameObject " + selectedObject);
+            if (selectedObject != go)
+            {
+                selectedObject = go;
+                //Debug.Log("Selected GameObject " + selectedObject);
+            }
+        }
+
+        public void DeselectObject()
+        {
+            selectedObject = null;
+        }
+
+        public bool IsSelected(GameObject go)
+        {
+            return selectedObject = go;
         }
     }
-
-    public void DeselectObject()
-    {
-        selectedObject = null;
-    }
-
-    public bool IsSelected(GameObject go)
-    {
-        return selectedObject = go;
-    }
 }
+

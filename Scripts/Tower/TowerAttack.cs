@@ -1,104 +1,107 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using LTD.Database;
+using LTD.EnemyUnits;
 using UnityEngine;
 
-public class TowerAttack : MonoBehaviour
+namespace LTD.Towers
 {
-    [SerializeField] GameObject turret;
-    [SerializeField] ParticleSystem projectileParticle;
-
-    Tower m_tower;
-    UnitDatabase unitDatabase;
-
-    float attackRange;
-    int damage;
-    readonly float rotateTime = 0.4f;
-    float delay = 0f;
-    iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
-    Transform target;
-
-    private void Start()
+    public class TowerAttack : MonoBehaviour
     {
-        unitDatabase = FindObjectOfType<UnitDatabase>();
-    }
+        [SerializeField] GameObject turret;
+        [SerializeField] ParticleSystem projectileParticle;
 
-    private void Update()
-    {
-        SetTargetEnemy();
-        if (target)
+        Tower m_tower;
+        UnitDatabase unitDatabase;
+
+        float attackRange;
+        int damage;
+        readonly float rotateTime = 0.4f;
+        float delay = 0f;
+        iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
+        Transform target;
+
+        private void Start()
         {
-            RotateToEnemy(target);
-            FireAtEnemy();
+            unitDatabase = FindObjectOfType<UnitDatabase>();
         }
-        else
+
+        private void Update()
         {
-            Shoot(false);
+            SetTargetEnemy();
+            if (target)
+            {
+                RotateToEnemy(target);
+                FireAtEnemy();
+            }
+            else
+            {
+                Shoot(false);
+            }
         }
-    }
 
-    private void SetTargetEnemy()
-    {
-        var enemies = FindObjectsOfType<EnemyMovement>();
-        if (enemies.Length < 1) return;
-
-        Transform closestEnemy = enemies[0].transform;
-        foreach (EnemyMovement enemy in enemies)
+        private void SetTargetEnemy()
         {
-            closestEnemy = GetClosest(closestEnemy, enemy.transform);
+            var enemies = FindObjectsOfType<EnemyMovement>();
+            if (enemies.Length < 1) return;
+
+            Transform closestEnemy = enemies[0].transform;
+            foreach (EnemyMovement enemy in enemies)
+            {
+                closestEnemy = GetClosest(closestEnemy, enemy.transform);
+            }
+            target = closestEnemy;
         }
-        target = closestEnemy;
-    }
 
-    public void Init(Tower tower)
-    {
-        this.attackRange = tower.attackRange;
-        this.damage = tower.damage;
-        m_tower = tower;
-    }
-
-    public void RotateToEnemy(Transform target)
-    {
-        Vector3 relativePos = target.position - transform.position;
-        Quaternion newRot = Quaternion.LookRotation(relativePos, Vector3.up);
-        float newY = newRot.eulerAngles.y;
-
-        iTween.RotateTo(turret, iTween.Hash(
-            "y", newY,
-            "delay", delay,
-            "easetype", easeType,
-            "time", rotateTime
-        ));
-    }
-
-    private Transform GetClosest(Transform transformA, Transform transformB)
-    {
-        var disToA = Vector3.Distance(transform.position, transformA.position);
-        var disToB = Vector3.Distance(transform.position, transformB.position);
-
-        if (disToA < disToB)
+        public void Init(Tower tower)
         {
-            return transformA;
+            this.attackRange = tower.attackRange;
+            this.damage = tower.damage;
+            m_tower = tower;
         }
-        return transformB;
-    }
 
-    private void FireAtEnemy()
-    {
-        float distanceToEnemy = Vector3.Distance(target.position, gameObject.transform.position);
-        if (distanceToEnemy <= attackRange)
+        public void RotateToEnemy(Transform target)
         {
-            Shoot(true);
-        }
-        else
-        {
-            Shoot(false);
-        }
-    }
+            Vector3 relativePos = target.position - transform.position;
+            Quaternion newRot = Quaternion.LookRotation(relativePos, Vector3.up);
+            float newY = newRot.eulerAngles.y;
 
-    private void Shoot(bool isActive)
-    {
-        var emissionModule = projectileParticle.emission;
-        emissionModule.enabled = isActive;
+            iTween.RotateTo(turret, iTween.Hash(
+                "y", newY,
+                "delay", delay,
+                "easetype", easeType,
+                "time", rotateTime
+            ));
+        }
+
+        private Transform GetClosest(Transform transformA, Transform transformB)
+        {
+            var disToA = Vector3.Distance(transform.position, transformA.position);
+            var disToB = Vector3.Distance(transform.position, transformB.position);
+
+            if (disToA < disToB)
+            {
+                return transformA;
+            }
+            return transformB;
+        }
+
+        private void FireAtEnemy()
+        {
+            float distanceToEnemy = Vector3.Distance(target.position, gameObject.transform.position);
+            if (distanceToEnemy <= attackRange)
+            {
+                Shoot(true);
+            }
+            else
+            {
+                Shoot(false);
+            }
+        }
+
+        private void Shoot(bool isActive)
+        {
+            var emissionModule = projectileParticle.emission;
+            emissionModule.enabled = isActive;
+        }
     }
 }
+

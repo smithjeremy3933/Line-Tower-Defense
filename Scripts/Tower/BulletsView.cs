@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class BulletsView : MonoBehaviour
+namespace LTD.Towers
 {
-    Bullets m_bullets;
-    public int damage;
-
-    public void Init(Bullets bullets)
+    public class BulletsView : MonoBehaviour
     {
-        m_bullets = bullets;
-        damage = bullets.damage;
+        Bullets m_bullets;
+        public int damage;
+
+        public void Init(Bullets bullets)
+        {
+            m_bullets = bullets;
+            damage = bullets.damage;
+        }
     }
 }

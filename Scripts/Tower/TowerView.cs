@@ -1,24 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class TowerView : MonoBehaviour
+namespace LTD.Towers
 {
-    public GameObject tower;
-    Tower m_tower;
-
-    int cost;
-
-    public int Cost { get => cost; }
-
-    public void Init(Tower tower)
+    public class TowerView : MonoBehaviour
     {
-        if (tower != null)
+        public GameObject tower;
+        Tower m_tower;
+
+        int cost;
+
+        public int Cost { get => cost; }
+
+        public void Init(Tower tower)
         {
-            gameObject.name = "Tower (" + tower.node.xIndex + "," + tower.node.yIndex + ")";
-            gameObject.transform.position = tower.position;
-            m_tower = tower;
-            cost = tower.cost;
+            if (tower != null)
+            {
+                gameObject.name = "Tower (" + tower.node.xIndex + "," + tower.node.yIndex + ")";
+                gameObject.transform.position = tower.position;
+                m_tower = tower;
+                cost = tower.cost;
+            }
         }
     }
 }
+

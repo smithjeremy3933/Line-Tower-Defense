@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Bullets
+﻿namespace LTD.Towers
 {
-    Tower tower;
-    public int damage = 100;
-
-    public Bullets(Tower tower)
+    public class Bullets
     {
-        this.tower = tower;
+        Tower tower;
+        public int damage = 100;
+
+        public Bullets(Tower tower)
+        {
+            this.tower = tower;
+        }
     }
 }
+

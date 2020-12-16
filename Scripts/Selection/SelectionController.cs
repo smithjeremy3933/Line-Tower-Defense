@@ -1,75 +1,79 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LTD.Database;
+using LTD.Towers;
 using UnityEngine;
 
-public class SelectionController : MonoBehaviour
+namespace LTD.Controller
 {
-    GameObject hoveredObject;
-    Selection selection;
-    TowerFactory towerFactory;
-    Graph graph;
-    UnitDatabase unitDatabase;
-
-    readonly float maxRayDist = 1000f;
-
-    private void Start()
+    public class SelectionController : MonoBehaviour
     {
-        selection = gameObject.GetComponent<Selection>();
-        towerFactory = FindObjectOfType<TowerFactory>();
-        graph = FindObjectOfType<Graph>();
-        unitDatabase = FindObjectOfType<UnitDatabase>();
-    }
+        GameObject hoveredObject;
+        Selection selection;
+        TowerFactory towerFactory;
+        Graph graph;
+        UnitDatabase unitDatabase;
 
-    private void Update()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitInfo;
-        bool hasHit = Physics.Raycast(ray, out hitInfo, maxRayDist);
+        readonly float maxRayDist = 1000f;
 
-        if (hasHit)
+        private void Start()
         {
-            GameObject go = hitInfo.collider.gameObject;
-            if (Input.GetMouseButtonDown(0))
+            selection = gameObject.GetComponent<Selection>();
+            towerFactory = FindObjectOfType<TowerFactory>();
+            graph = FindObjectOfType<Graph>();
+            unitDatabase = FindObjectOfType<UnitDatabase>();
+        }
+
+        private void Update()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+            bool hasHit = Physics.Raycast(ray, out hitInfo, maxRayDist);
+
+            if (hasHit)
             {
-                selection.SetSelectedObject(go);
-                
-                if (graph.IsWithinBounds(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z)))
+                GameObject go = hitInfo.collider.gameObject;
+                if (Input.GetMouseButtonDown(0))
                 {
-                    Node node = graph.GetNodeAt(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z));
-                    //Debug.Log(node.xIndex + "," + node.yIndex);
-                    if (!unitDatabase.IsEnemyInArea(node))
-                    {
-                        towerFactory.SpawnTower(node);
-                    }
-                }             
-            }
-            HoveredObject(go);
-        }
-        else
-        {
-            ClearSelection();
-        }
-    }
+                    selection.SetSelectedObject(go);
 
-    void HoveredObject(GameObject obj)
-    {
-        if (hoveredObject != null)
+                    if (graph.IsWithinBounds(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z)))
+                    {
+                        Node node = graph.GetNodeAt(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z));
+                        //Debug.Log(node.xIndex + "," + node.yIndex);
+                        if (!unitDatabase.IsEnemyInArea(node))
+                        {
+                            towerFactory.SpawnTower(node);
+                        }
+                    }
+                }
+                HoveredObject(go);
+            }
+            else
+            {
+                ClearSelection();
+            }
+        }
+
+        void HoveredObject(GameObject obj)
         {
-            if (obj == hoveredObject)
+            if (hoveredObject != null)
+            {
+                if (obj == hoveredObject)
+                    return;
+
+                ClearSelection();
+            }
+
+            hoveredObject = obj;
+            //Debug.Log(hoveredObject.name + " is hovered.");
+        }
+
+        void ClearSelection()
+        {
+            if (hoveredObject == null)
                 return;
 
-            ClearSelection();
+            hoveredObject = null;
         }
-
-        hoveredObject = obj;
-        //Debug.Log(hoveredObject.name + " is hovered.");
     }
 
-    void ClearSelection()
-    {
-        if (hoveredObject == null)
-            return;
-
-        hoveredObject = null;
-    }
 }

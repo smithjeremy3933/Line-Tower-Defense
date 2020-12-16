@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Wave
+﻿namespace LTD.Controller
 {
-    public int numberOfEnemies;
-
-    public Wave(int enemyNumber)
+    public class Wave
     {
-        this.numberOfEnemies = enemyNumber;
+        public int numberOfEnemies;
+
+        public Wave(int enemyNumber)
+        {
+            this.numberOfEnemies = enemyNumber;
+        }
     }
+
 }

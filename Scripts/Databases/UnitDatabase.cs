@@ -1,141 +1,145 @@
-﻿using System.Collections;
+﻿using LTD.EnemyUnits;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitDatabase : MonoBehaviour
+namespace LTD.Database
 {
-    Dictionary<Node, List<EnemyMovement>> nodeEnemymovementsMap = new Dictionary<Node, List<EnemyMovement>>();
-    List<Unit> unitsList = new List<Unit>();
-
-    private void Start()
+    public class UnitDatabase : MonoBehaviour
     {
-        EnemyMovement.OnEnemyMoved += EnemyMovement_OnEnemyMoved;
-        EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
-    }
+        Dictionary<Node, List<EnemyMovement>> nodeEnemymovementsMap = new Dictionary<Node, List<EnemyMovement>>();
+        List<Unit> unitsList = new List<Unit>();
 
-    public List<Node> GetNodesWithEnemies()
-    {
-        List<Node> nodesWithEnemies = new List<Node>();
-        foreach (Node node in nodeEnemymovementsMap.Keys)
+        private void Start()
         {
-            nodesWithEnemies.Add(node);
+            EnemyMovement.OnEnemyMoved += EnemyMovement_OnEnemyMoved;
+            EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
         }
-        return nodesWithEnemies;
-    }
 
-    public void AddNewEnemy(EnemyMovement enemyMovement, Node startNode, Unit enemyUnit)
-    {
-        if (enemyMovement != null && startNode != null && enemyUnit != null)
+        public List<Node> GetNodesWithEnemies()
         {
-            unitsList.Add(enemyUnit);
-
-            if (!nodeEnemymovementsMap.ContainsKey(startNode))
+            List<Node> nodesWithEnemies = new List<Node>();
+            foreach (Node node in nodeEnemymovementsMap.Keys)
             {
-                List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
-                enemyMovements.Add(enemyMovement);
-                nodeEnemymovementsMap.Add(startNode, enemyMovements);
+                nodesWithEnemies.Add(node);
             }
-            else
+            return nodesWithEnemies;
+        }
+
+        public void AddNewEnemy(EnemyMovement enemyMovement, Node startNode, Unit enemyUnit)
+        {
+            if (enemyMovement != null && startNode != null && enemyUnit != null)
             {
-                nodeEnemymovementsMap[startNode].Add(enemyMovement);
+                unitsList.Add(enemyUnit);
+
+                if (!nodeEnemymovementsMap.ContainsKey(startNode))
+                {
+                    List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
+                    enemyMovements.Add(enemyMovement);
+                    nodeEnemymovementsMap.Add(startNode, enemyMovements);
+                }
+                else
+                {
+                    nodeEnemymovementsMap[startNode].Add(enemyMovement);
+                }
             }
         }
-    }
 
-    public bool IsEnemyInArea(Node node)
-    {
-        foreach (Node neighbor in node.neighbors)
+        public bool IsEnemyInArea(Node node)
         {
-            if (nodeEnemymovementsMap.ContainsKey(neighbor) || nodeEnemymovementsMap.ContainsKey(node))
+            foreach (Node neighbor in node.neighbors)
             {
-                Debug.Log("Enemy in area");
+                if (nodeEnemymovementsMap.ContainsKey(neighbor) || nodeEnemymovementsMap.ContainsKey(node))
+                {
+                    Debug.Log("Enemy in area");
+                    return true;
+                }
+            }
+            Debug.Log("Enemy not in area");
+            return false;
+        }
+
+        public bool IsEmpty()
+        {
+            if (unitsList.Count < 1)
+            {
                 return true;
             }
+            return false;
         }
-        Debug.Log("Enemy not in area");
-        return false;
-    }
 
-    public bool IsEmpty()
-    {
-        if (unitsList.Count < 1)
+        private void EnemyHealth_OnEnemyDeath(object sender, EnemyHealth.OnEnemyDeathEventArgs e)
         {
-            return true;
+            RemoveEnemy(e.enemyMovement);
         }
-        return false;
-    }
 
-    private void EnemyHealth_OnEnemyDeath(object sender, EnemyHealth.OnEnemyDeathEventArgs e)
-    {
-        RemoveEnemy(e.enemyMovement);
-    }
-
-    private void RemoveEnemy(EnemyMovement enemyMovement)
-    {
-        if (enemyMovement == null) return;
-        Unit unit = GetUnitFromEnemyMovement(enemyMovement);
-        Node currentNode = unit.node;
-        foreach (Node node in nodeEnemymovementsMap.Keys)
+        private void RemoveEnemy(EnemyMovement enemyMovement)
         {
-            if (currentNode == node)
+            if (enemyMovement == null) return;
+            Unit unit = GetUnitFromEnemyMovement(enemyMovement);
+            Node currentNode = unit.node;
+            foreach (Node node in nodeEnemymovementsMap.Keys)
             {
-                foreach (EnemyMovement enemy in nodeEnemymovementsMap[node])
+                if (currentNode == node)
                 {
-                    if (enemyMovement == enemy)
+                    foreach (EnemyMovement enemy in nodeEnemymovementsMap[node])
                     {
-                        nodeEnemymovementsMap[node].Remove(enemy);
-                        unitsList.Remove(unit);
-                        Debug.Log("Removed enemy from map after death");
-                        return;
+                        if (enemyMovement == enemy)
+                        {
+                            nodeEnemymovementsMap[node].Remove(enemy);
+                            unitsList.Remove(unit);
+                            Debug.Log("Removed enemy from map after death");
+                            return;
+                        }
                     }
                 }
             }
         }
-    }
 
-    private Unit GetUnitFromEnemyMovement(EnemyMovement enemyMovement)
-    {
-        if (enemyMovement != null)
+        private Unit GetUnitFromEnemyMovement(EnemyMovement enemyMovement)
         {
-            foreach (Unit unit in unitsList)
+            if (enemyMovement != null)
             {
-                if (enemyMovement.Unit == unit)
+                foreach (Unit unit in unitsList)
                 {
-                    return unit;
+                    if (enemyMovement.Unit == unit)
+                    {
+                        return unit;
+                    }
                 }
             }
+            return null;
         }
-        return null;
-    }
 
-    private void EnemyMovement_OnEnemyMoved(object sender, EnemyMovement.OnEnemyMovedEventArgs e)
-    {
-        UpdateMovement(e.enemyMovement, e.oldNode, e.newNode);
-    }
-
-    private void UpdateMovement(EnemyMovement enemyMovement,Node oldNode, Node newNode)
-    {
-        if (enemyMovement != null || oldNode != null || newNode != null)
+        private void EnemyMovement_OnEnemyMoved(object sender, EnemyMovement.OnEnemyMovedEventArgs e)
         {
-            Unit unit = GetUnitFromEnemyMovement(enemyMovement);
-            unit.node = newNode;
-            unit.position = newNode.position;
-            nodeEnemymovementsMap[oldNode].Remove(enemyMovement);
-            if (nodeEnemymovementsMap[oldNode].Count < 1)
-            {
-                nodeEnemymovementsMap.Remove(oldNode);
-            }
+            UpdateMovement(e.enemyMovement, e.oldNode, e.newNode);
+        }
 
-            if (nodeEnemymovementsMap.ContainsKey(newNode))
+        private void UpdateMovement(EnemyMovement enemyMovement, Node oldNode, Node newNode)
+        {
+            if (enemyMovement != null || oldNode != null || newNode != null)
             {
-                nodeEnemymovementsMap[newNode].Add(enemyMovement);
-            }
-            else
-            {
-                List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
-                enemyMovements.Add(enemyMovement);
-                nodeEnemymovementsMap.Add(newNode, enemyMovements);
+                Unit unit = GetUnitFromEnemyMovement(enemyMovement);
+                unit.node = newNode;
+                unit.position = newNode.position;
+                nodeEnemymovementsMap[oldNode].Remove(enemyMovement);
+                if (nodeEnemymovementsMap[oldNode].Count < 1)
+                {
+                    nodeEnemymovementsMap.Remove(oldNode);
+                }
+
+                if (nodeEnemymovementsMap.ContainsKey(newNode))
+                {
+                    nodeEnemymovementsMap[newNode].Add(enemyMovement);
+                }
+                else
+                {
+                    List<EnemyMovement> enemyMovements = new List<EnemyMovement>();
+                    enemyMovements.Add(enemyMovement);
+                    nodeEnemymovementsMap.Add(newNode, enemyMovements);
+                }
             }
         }
     }
 }
+
