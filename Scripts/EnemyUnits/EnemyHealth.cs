@@ -15,7 +15,14 @@ namespace LTD.EnemyUnits
             public EnemyMovement enemyMovement;
         }
 
-        int health = 100;
+        int health;
+        Unit _unit;
+
+        public void Init(Unit unit)
+        {
+            health = unit.health;
+            _unit = unit;
+        }
 
         public void TakeDamage(int damage)
         {
@@ -29,6 +36,7 @@ namespace LTD.EnemyUnits
         private void ProcessHit(int damage)
         {
             health = Mathf.Max(health - damage, 0);
+            _unit.health = Mathf.Max(_unit.health - damage, 0);
             hitParticleSystem.Play();
         }
 

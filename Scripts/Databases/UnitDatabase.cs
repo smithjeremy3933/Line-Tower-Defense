@@ -16,6 +16,29 @@ namespace LTD.Database
             EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
         }
 
+        public bool NodeContainsEnemies(Node node)
+        {
+            if (node == null) return false;
+            if (nodeEnemymovementsMap.ContainsKey(node))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public Unit GetUnitFromNode(Node node)
+        {
+            if (node == null && !IsEmpty()) return null;
+            foreach (Unit listUnit in unitsList)
+            {
+                if (listUnit.node == node)
+                {
+                    return listUnit;
+                }
+            }
+            return null;
+        }
+
         public List<Node> GetNodesWithEnemies()
         {
             List<Node> nodesWithEnemies = new List<Node>();
@@ -52,11 +75,9 @@ namespace LTD.Database
 
                 if (nodeEnemymovementsMap.ContainsKey(neighbor) || nodeEnemymovementsMap.ContainsKey(node) && nodeEnemymovementsMap[neighbor].Count != 0)
                 {
-                    Debug.Log("Enemy in area ");
                     return true;
                 }
             }
-            Debug.Log("Enemy not in area");
             return false;
         }
 

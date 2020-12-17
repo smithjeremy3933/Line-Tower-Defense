@@ -9,6 +9,7 @@ namespace LTD.Database
     {
         Dictionary<Node, Tower> nodeTowerMap = new Dictionary<Node, Tower>();
         List<TowerHealth> towerHealthList = new List<TowerHealth>();
+        List<Tower> towerList = new List<Tower>();
         Graph graph;
 
         private void Start()
@@ -17,12 +18,24 @@ namespace LTD.Database
             TowerHealth.OnTowerDeath += TowerHealth_OnTowerDeath;
         }
 
+        public Tower GetTowerFromNode(Node node)
+        {
+            if (node == null) return null;
+            foreach (Tower listTower in towerList)
+            {
+                if (listTower.node == node)
+                {
+                    return listTower;
+                }
+            }
+            return null;
+        }
+
         private void TowerHealth_OnTowerDeath(object sender, TowerHealth.OnTowerDeathEventArgs e)
         {
             Debug.Log("Tower Died");
             RemoveTowerHealth(e.tower);
             RemoveTower(e.tower);
-
         }
 
         public TowerHealth GetTowerHealth(Tower tower)
@@ -65,6 +78,7 @@ namespace LTD.Database
                 else
                 {
                     nodeTowerMap.Add(node, tower);
+                    towerList.Add(tower);
                 }
             }
         }
@@ -74,6 +88,7 @@ namespace LTD.Database
             if (tower != null)
             {
                 nodeTowerMap.Remove(tower.node);
+                towerList.Remove(tower);
                 tower.node.nodeType = NodeType.Open;
             }
         }

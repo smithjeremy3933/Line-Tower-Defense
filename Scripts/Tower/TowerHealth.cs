@@ -34,6 +34,7 @@ namespace LTD.Towers
         private void ProcessHit(int damage)
         {
             health = Mathf.Max(health - damage, 0);
+            m_tower.health = Mathf.Max(m_tower.health - damage, 0);
         }
 
         private void Die()

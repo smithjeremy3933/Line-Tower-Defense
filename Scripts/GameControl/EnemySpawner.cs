@@ -22,10 +22,7 @@ namespace LTD.Controller
                 {
                     GameObject instance = Instantiate(enemyViewGO, startNode.position, Quaternion.identity, this.transform);
                     Unit unit = new Unit(startNode);
-                    EnemyController enemyController = instance.GetComponent<EnemyController>();
-                    EnemyMovement enemyMovement = instance.GetComponent<EnemyMovement>();
-                    enemyController.Init(unit);
-                    enemyMovement.Init(unit);
+                    EnemyMovement enemyMovement = InitComponents(instance, unit);
                     unitDatabase.AddNewEnemy(enemyMovement, startNode, unit);
                     numberOfEnemies--;
                 }
@@ -41,6 +38,19 @@ namespace LTD.Controller
                 return true;
             }
             return false;
+        }
+
+        private static EnemyMovement InitComponents(GameObject instance, Unit unit)
+        {
+            EnemyController enemyController = instance.GetComponent<EnemyController>();
+            EnemyMovement enemyMovement = instance.GetComponent<EnemyMovement>();
+            EnemyHealth enemyHealth = instance.GetComponent<EnemyHealth>();
+            UnitView unitView = instance.GetComponent<UnitView>();
+            enemyController.Init(unit);
+            enemyMovement.Init(unit);
+            enemyHealth.Init(unit);
+            unitView.Init(unit);
+            return enemyMovement;
         }
     }
 

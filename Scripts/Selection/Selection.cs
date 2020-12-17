@@ -1,17 +1,50 @@
-﻿using UnityEngine;
+﻿using LTD.Database;
+using LTD.EnemyUnits;
+using LTD.Map;
+using LTD.Towers;
+using UnityEngine;
 
 namespace LTD.Controller
 {
     public class Selection : MonoBehaviour
     {
         GameObject selectedObject;
+        Graph graph;
+        UnitDatabase unitDatabase;
+        TowerDatabase towerDatabase;
+
+        private void Start()
+        {
+            graph = FindObjectOfType<Graph>();
+            unitDatabase = FindObjectOfType<UnitDatabase>();
+            towerDatabase = FindObjectOfType<TowerDatabase>();
+        }
 
         public void SetSelectedObject(GameObject go)
         {
+            if (IsSelected(go) || go == null) return;
             if (selectedObject != go)
             {
-                selectedObject = go;
-                //Debug.Log("Selected GameObject " + selectedObject);
+                Node node = graph.GetNodeAt(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z));
+                if (unitDatabase.NodeContainsEnemies(node))
+                {
+                    Unit unit = unitDatabase.GetUnitFromNode(node);
+                    Debug.Log(unit.health);
+                    selectedObject = go;
+                }
+                else if (towerDatabase.ContainsTowers(node))
+                {
+                    Tower tower = towerDatabase.GetTowerFromNode(node);
+                    TowerHealth towerHealth = towerDatabase.GetTowerHealth(tower);
+                    Debug.Log(tower.health);
+                    selectedObject = towerHealth.gameObject;
+                    Debug.Log("Selected GameObject " + selectedObject.name);
+                }
+                else
+                {
+                    Debug.Log("No tower or units on node");
+                    DeselectObject();
+                }         
             }
         }
 
@@ -22,7 +55,7 @@ namespace LTD.Controller
 
         public bool IsSelected(GameObject go)
         {
-            return selectedObject = go;
+            return selectedObject == go;
         }
     }
 }

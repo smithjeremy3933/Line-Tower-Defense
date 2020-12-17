@@ -35,21 +35,24 @@ namespace LTD.Controller
             if (hasHit)
             {
                 GameObject go = hitInfo.collider.gameObject;
-                if (Mouse.current.leftButton.isPressed)
+                if (graph.IsWithinBounds(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z)))
                 {
-                    selection.SetSelectedObject(go);
-
-                    if (graph.IsWithinBounds(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z)))
+                    if (Mouse.current.leftButton.isPressed)
                     {
+
                         Node node = graph.GetNodeAt(Mathf.RoundToInt(go.transform.position.x), Mathf.RoundToInt(go.transform.position.z));
-                        //Debug.Log(node.xIndex + "," + node.yIndex);
                         if (!unitDatabase.IsEnemyInArea(node))
                         {
                             towerFactory.SpawnTower(node);
                         }
+
                     }
-                }
-                HoveredObject(go);
+                    else if (Mouse.current.rightButton.isPressed)
+                    {
+                        selection.SetSelectedObject(go);
+                    }
+                    HoveredObject(go);
+                }   
             }
             else
             {

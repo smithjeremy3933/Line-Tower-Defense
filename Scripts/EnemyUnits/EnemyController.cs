@@ -38,7 +38,7 @@ namespace LTD.EnemyUnits
         {
             if (currentNode == m_goalNode)
             {
-                enemyHealth.ReachedGoal();
+                ScoringBehavior();
                 return;
             }
 
@@ -69,6 +69,11 @@ namespace LTD.EnemyUnits
         public void Init(Unit unit)
         {
             m_unit = unit;
+        }
+
+        private void ScoringBehavior()
+        {
+            enemyHealth.ReachedGoal();
         }
 
         private void InitBehaviors()

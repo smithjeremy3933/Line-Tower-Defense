@@ -18,7 +18,7 @@ namespace LTD.Controller
         int lives = 10;
         int money = 500;
         int startingWaveIdx = 0;
-        float timeBetweenWaves = 10f;
+        float timeBetweenWaves = 30f;
         int numberOfWaves = 10;
         bool isWaveInProgress = false;
         float intermissionTimer = 0;

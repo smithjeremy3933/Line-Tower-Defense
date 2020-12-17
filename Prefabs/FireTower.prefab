@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 236181102821997128}
   - component: {fileID: 4755941835513418163}
   - component: {fileID: 8494396887757450501}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tower_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,8 @@ GameObject:
   - component: {fileID: 4488740127173679960}
   - component: {fileID: 2952244603873264949}
   - component: {fileID: 2378900991579223997}
-  m_Layer: 0
+  - component: {fileID: 805500305561353290}
+  m_Layer: 8
   m_Name: FireTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +154,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turret: {fileID: 8212937350303090823}
-  projectileParticle: {fileID: 418001216072461206}
+  projectileParticle: {fileID: 8951935186166753952}
+--- !u!136 &805500305561353290
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4243923017287185941}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.3
+  m_Height: 1.6
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0.1}
 --- !u!1 &4795902269180521178
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +180,7 @@ GameObject:
   - component: {fileID: 8127913188024430005}
   - component: {fileID: 2097790546402820036}
   - component: {fileID: 701405342691286601}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tower_Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +199,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8763361784723992312}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2097790546402820036
 MeshFilter:
@@ -244,7 +259,7 @@ GameObject:
   - component: {fileID: 8763361784723992312}
   - component: {fileID: 8355050058476716831}
   - component: {fileID: 8273880286435415096}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tower_Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,8 +277,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.063, z: 0.04000002}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children:
+  - {fileID: 2528203301478620955}
   - {fileID: 8127913188024430005}
-  - {fileID: 6549179414590938669}
   m_Father: {fileID: 918216073165620230}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -314,7 +329,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1001 &4766444454321719925
+--- !u!1001 &4310911869324757827
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -329,12 +344,12 @@ PrefabInstance:
     - target: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.009
+      value: -0.0398
       objectReference: {fileID: 0}
     - target: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0005
+      value: -0.0023
       objectReference: {fileID: 0}
     - target: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
@@ -359,7 +374,7 @@ PrefabInstance:
     - target: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
@@ -376,32 +391,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 21.003
       objectReference: {fileID: 0}
-    - target: {fileID: 3276182811057698710, guid: 59239803a64e44b409c74643690d102a,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b5fdbb1d0f5374cd9925eab0238603fa, type: 2}
     - target: {fileID: 4168651954369487317, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
       propertyPath: m_Name
       value: Bullets
       objectReference: {fileID: 0}
+    - target: {fileID: 4168651954369487317, guid: 59239803a64e44b409c74643690d102a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5181609203756966371, guid: 59239803a64e44b409c74643690d102a,
         type: 3}
-      propertyPath: moveWithTransform
-      value: 1
+      propertyPath: CollisionModule.collidesWith.m_Bits
+      value: 512
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59239803a64e44b409c74643690d102a, type: 3}
---- !u!4 &6549179414590938669 stripped
+--- !u!4 &2528203301478620955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1785277033199457368, guid: 59239803a64e44b409c74643690d102a,
     type: 3}
-  m_PrefabInstance: {fileID: 4766444454321719925}
+  m_PrefabInstance: {fileID: 4310911869324757827}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &418001216072461206 stripped
+--- !u!198 &8951935186166753952 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5181609203756966371, guid: 59239803a64e44b409c74643690d102a,
     type: 3}
-  m_PrefabInstance: {fileID: 4766444454321719925}
+  m_PrefabInstance: {fileID: 4310911869324757827}
   m_PrefabAsset: {fileID: 0}
