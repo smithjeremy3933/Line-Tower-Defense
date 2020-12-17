@@ -49,12 +49,14 @@ namespace LTD.Database
         {
             foreach (Node neighbor in node.neighbors)
             {
-                if (nodeEnemymovementsMap.ContainsKey(neighbor) || nodeEnemymovementsMap.ContainsKey(node))
+
+                if (nodeEnemymovementsMap.ContainsKey(neighbor) || nodeEnemymovementsMap.ContainsKey(node) && nodeEnemymovementsMap[neighbor].Count != 0)
                 {
-                    Debug.Log("Enemy in area");
+                    Debug.Log("Enemy in area ");
                     return true;
                 }
             }
+            Debug.Log("Enemy not in area");
             return false;
         }
 
@@ -65,6 +67,14 @@ namespace LTD.Database
                 return true;
             }
             return false;
+        }
+
+        public void ClearEnemiesFromMap()
+        {
+            foreach (Node node in nodeEnemymovementsMap.Keys)
+            {
+                nodeEnemymovementsMap[node].Clear();
+            }
         }
 
         private void EnemyHealth_OnEnemyDeath(object sender, EnemyHealth.OnEnemyDeathEventArgs e)
@@ -87,6 +97,10 @@ namespace LTD.Database
                         if (enemyMovement == enemy)
                         {
                             nodeEnemymovementsMap[node].Remove(enemy);
+                            if (nodeEnemymovementsMap[node].Count < 1)
+                            {
+                                nodeEnemymovementsMap.Remove(node);
+                            }
                             unitsList.Remove(unit);
                             Debug.Log("Removed enemy from map after death");
                             return;

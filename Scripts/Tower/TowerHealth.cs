@@ -24,12 +24,16 @@ namespace LTD.Towers
 
         public void TakeDamage(int damage)
         {
-            health = Mathf.Max(health - damage, 0);
-            Debug.Log(health);
+            ProcessHit(damage);
             if (health <= 0)
             {
                 Die();
             }
+        }
+
+        private void ProcessHit(int damage)
+        {
+            health = Mathf.Max(health - damage, 0);
         }
 
         private void Die()

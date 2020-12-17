@@ -6,6 +6,8 @@ namespace LTD.EnemyUnits
 {
     public class EnemyHealth : MonoBehaviour
     {
+        [SerializeField] private ParticleSystem hitParticleSystem;
+
         public static event EventHandler OnEnemyScored;
         public static event EventHandler<OnEnemyDeathEventArgs> OnEnemyDeath;
         public class OnEnemyDeathEventArgs : EventArgs
@@ -17,11 +19,17 @@ namespace LTD.EnemyUnits
 
         public void TakeDamage(int damage)
         {
-            health = Mathf.Max(health - damage, 0);
+            ProcessHit(damage);
             if (health <= 0)
             {
                 Die();
             }
+        }
+
+        private void ProcessHit(int damage)
+        {
+            health = Mathf.Max(health - damage, 0);
+            hitParticleSystem.Play();
         }
 
         public void ReachedGoal()

@@ -3,7 +3,7 @@
     public class Bullets
     {
         Tower tower;
-        public int damage = 100;
+        public int damage = 5;
 
         public Bullets(Tower tower)
         {
