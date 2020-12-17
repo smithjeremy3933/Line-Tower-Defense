@@ -1,6 +1,8 @@
 ﻿using LTD.Database;
+using LTD.Map;
 using LTD.Towers;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace LTD.Controller
 {
@@ -14,6 +16,8 @@ namespace LTD.Controller
 
         readonly float maxRayDist = 1000f;
 
+        public GameObject HoveredGO { get => hoveredObject; }
+
         private void Start()
         {
             selection = gameObject.GetComponent<Selection>();
@@ -24,14 +28,14 @@ namespace LTD.Controller
 
         private void Update()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hitInfo;
             bool hasHit = Physics.Raycast(ray, out hitInfo, maxRayDist);
 
             if (hasHit)
             {
                 GameObject go = hitInfo.collider.gameObject;
-                if (Input.GetMouseButtonDown(0))
+                if (Mouse.current.leftButton.isPressed)
                 {
                     selection.SetSelectedObject(go);
 

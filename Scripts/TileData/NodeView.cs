@@ -1,43 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class NodeView : MonoBehaviour
+namespace LTD.Map
 {
-    public GameObject tile;
-    Node m_node;
-
-
-    [Range(0, 0.5f)]
-    public float borderSize = 0.15f;
-
-    public void Init(Node node)
+    public class NodeView : MonoBehaviour
     {
-        if (tile != null)
-        {
-            gameObject.name = "Node (" + node.xIndex + "," + node.yIndex + ")";
-            gameObject.transform.position = node.position;
-            tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
-            m_node = node;
-        }
-    }
+        public GameObject tile;
+        Node m_node;
 
-    void ColorNode(Color color, GameObject go)
-    {
-        if (go != null)
-        {
-            Renderer goRenderer = go.GetComponent<Renderer>();
 
-            if (goRenderer != null)
+        [Range(0, 0.5f)]
+        public float borderSize = 0.15f;
+
+        public void Init(Node node)
+        {
+            if (tile != null)
             {
-                goRenderer.material.color = color;
+                gameObject.name = "Node (" + node.xIndex + "," + node.yIndex + ")";
+                gameObject.transform.position = node.position;
+                tile.transform.localScale = new Vector3(1f - borderSize, 1f, 1f - borderSize);
+                m_node = node;
             }
         }
-    }
 
-    public void ColorNode(Color color)
-    {
-        ColorNode(color, tile);
+        void ColorNode(Color color, GameObject go)
+        {
+            if (go != null)
+            {
+                Renderer goRenderer = go.GetComponent<Renderer>();
+
+                if (goRenderer != null)
+                {
+                    goRenderer.material.color = color;
+                }
+            }
+        }
+
+        public void ColorNode(Color color)
+        {
+            ColorNode(color, tile);
+        }
+
     }
 
 }

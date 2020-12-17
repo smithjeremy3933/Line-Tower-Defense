@@ -1,4 +1,5 @@
 ﻿using LTD.EnemyUnits;
+using LTD.Map;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,7 +55,6 @@ namespace LTD.Database
                     return true;
                 }
             }
-            Debug.Log("Enemy not in area");
             return false;
         }
 
@@ -76,6 +76,7 @@ namespace LTD.Database
         {
             if (enemyMovement == null) return;
             Unit unit = GetUnitFromEnemyMovement(enemyMovement);
+            if (unit == null) return;
             Node currentNode = unit.node;
             foreach (Node node in nodeEnemymovementsMap.Keys)
             {

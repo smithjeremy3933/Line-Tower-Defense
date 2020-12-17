@@ -1,70 +1,72 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MapData : MonoBehaviour
+namespace LTD.Map
 {
-    public int width = 15;
-    public int height = 15;
-
-    public TextAsset textAsset;
-
-    public List<string> GetTextFromFile(TextAsset tAsset)
+    public class MapData : MonoBehaviour
     {
-        List<string> lines = new List<string>();
+        public int width = 15;
+        public int height = 15;
 
-        if (tAsset != null)
+        public TextAsset textAsset;
+
+        public List<string> GetTextFromFile(TextAsset tAsset)
         {
-            string textData = tAsset.text;
-            string[] delimiters = { "\r\n", "\n" };
-            lines.AddRange(textData.Split(delimiters, System.StringSplitOptions.None));
-            lines.Reverse();
-        }
-        else
-        {
-            Debug.LogWarning("invalid Text Asset");
-        }
-        return lines;
-    }
+            List<string> lines = new List<string>();
 
-    public List<string> GetTextFromFile()
-    {
-        return GetTextFromFile(textAsset);
-    }
-
-
-    public void SetDimensions(List<string> textLines)
-    {
-        height = textLines.Count;
-        foreach (string line in textLines)
-        {
-            if (line.Length > width)
+            if (tAsset != null)
             {
-                width = line.Length;
+                string textData = tAsset.text;
+                string[] delimiters = { "\r\n", "\n" };
+                lines.AddRange(textData.Split(delimiters, System.StringSplitOptions.None));
+                lines.Reverse();
             }
-
-        }
-    }
-
-    public int[,] MakeMap()
-    {
-        List<string> lines = new List<string>();
-        lines = GetTextFromFile();
-        SetDimensions(lines);
-
-        int[,] map = new int[width, height];
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
+            else
             {
-                if (lines[y].Length > x)
+                Debug.LogWarning("invalid Text Asset");
+            }
+            return lines;
+        }
+
+        public List<string> GetTextFromFile()
+        {
+            return GetTextFromFile(textAsset);
+        }
+
+
+        public void SetDimensions(List<string> textLines)
+        {
+            height = textLines.Count;
+            foreach (string line in textLines)
+            {
+                if (line.Length > width)
                 {
-                    map[x, y] = (int)char.GetNumericValue(lines[y][x]);
+                    width = line.Length;
+                }
+
+            }
+        }
+
+        public int[,] MakeMap()
+        {
+            List<string> lines = new List<string>();
+            lines = GetTextFromFile();
+            SetDimensions(lines);
+
+            int[,] map = new int[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (lines[y].Length > x)
+                    {
+                        map[x, y] = (int)char.GetNumericValue(lines[y][x]);
+                    }
                 }
             }
+
+            return map;
         }
 
-        return map;
     }
-
 }

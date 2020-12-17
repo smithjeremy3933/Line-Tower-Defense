@@ -1,5 +1,6 @@
 ﻿using LTD.Database;
 using LTD.EnemyUnits;
+using LTD.Map;
 using LTD.Towers;
 using System;
 using System.Collections.Generic;
@@ -29,14 +30,12 @@ namespace LTD.Controller
             unitDatabase = FindObjectOfType<UnitDatabase>();
             tileContoller.Init();
             CreateWaves();
-            isWaveInProgress = true;
         }
 
         private void Start()
         {
             EnemyHealth.OnEnemyScored += EnemyHealth_OnEnemyScored;
             EnemyHealth.OnEnemyDeath += EnemyHealth_OnEnemyDeath;
-            SpawnEnemies(startingWaveIdx);
         }
 
         private void Update()

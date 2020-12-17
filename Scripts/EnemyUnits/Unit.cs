@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LTD.Map;
 using UnityEngine;
 
 public class Unit
