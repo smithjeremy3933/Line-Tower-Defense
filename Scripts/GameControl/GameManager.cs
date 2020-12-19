@@ -5,17 +5,21 @@ using LTD.Towers;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LTD.Controller
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] Text livesNum;
+        [SerializeField] Text cashNum;
+
         TileController tileContoller;
         EnemySpawner enemySpawner;
         List<Wave> waves = new List<Wave>();
         UnitDatabase unitDatabase;
 
-        int lives = 10;
+        int _lives = 10;
         int money = 500;
         int startingWaveIdx = 0;
         float timeBetweenWaves = 30f;
@@ -40,6 +44,7 @@ namespace LTD.Controller
 
         private void Update()
         {
+            DisplayResources();
             if (isWaveInProgress && unitDatabase.IsEmpty() && !enemySpawner.IsSpawning())
             {
                 Debug.Log("No more enemies. Spawn next wave after time between waves.");
@@ -56,6 +61,14 @@ namespace LTD.Controller
             }
         }
 
+        private void DisplayResources()
+        {
+            int lives = _lives;
+            int cash = money;
+            livesNum.text = lives.ToString();
+            cashNum.text = cash.ToString();
+        }
+
         public void DecreaseMoney(TowerView tower)
         {
             if (tower == null) return;
@@ -69,7 +82,7 @@ namespace LTD.Controller
 
         private void EnemyHealth_OnEnemyScored(object sender, EventArgs e)
         {
-            lives--;
+            _lives--;
         }
 
         private void SpawnEnemies(int waveIdx)
