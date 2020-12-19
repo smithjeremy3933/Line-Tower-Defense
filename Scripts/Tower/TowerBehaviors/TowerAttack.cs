@@ -53,8 +53,8 @@ namespace LTD.Towers
 
         public void Init(Tower tower)
         {
-            this.attackRange = tower.attackRange;
-            this.damage = tower.damage;
+            this.attackRange = tower.AttackRange;
+            this.damage = tower.Damage;
             m_tower = tower;
         }
 

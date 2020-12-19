@@ -18,7 +18,7 @@ namespace LTD.Towers
 
         public void Init(Tower tower)
         {
-            health = tower.health;
+            health = tower.Health;
             m_tower = tower;
         }
 
@@ -34,7 +34,7 @@ namespace LTD.Towers
         private void ProcessHit(int damage)
         {
             health = Mathf.Max(health - damage, 0);
-            m_tower.health = Mathf.Max(m_tower.health - damage, 0);
+            m_tower.Health = Mathf.Max(m_tower.Health - damage, 0);
         }
 
         private void Die()

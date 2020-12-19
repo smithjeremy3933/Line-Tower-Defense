@@ -115,8 +115,6 @@ namespace LTD.Database
                         closestTower = nodeTowerMap[node];
                     }
                 }
-
-                //Debug.Log(closestNode.position);
                 return closestTower;
             }
             return null;
@@ -131,5 +129,4 @@ namespace LTD.Database
             return false;
         }
     }
-
 }

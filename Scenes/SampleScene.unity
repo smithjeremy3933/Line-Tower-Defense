@@ -251,7 +251,7 @@ MonoBehaviour:
     - m_Name: 1D Axis
       m_Id: cf06cf1b-d25d-447a-9dd5-11e24d11051b
       m_Path: 1DAxis
-      m_Interactions: Hold
+      m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Horizontal Move
@@ -283,7 +283,7 @@ MonoBehaviour:
     - m_Name: 1D Axis
       m_Id: 34972bc3-89d6-4391-8201-7f78f5379d22
       m_Path: 1DAxis
-      m_Interactions: Hold
+      m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Vertical Move
@@ -803,6 +803,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireTower: {fileID: 4243923017287185941, guid: c9fd7be7a707f18488eb53094b95c8c8,
     type: 3}
+  towerList:
+  - {fileID: 4243923017287185941, guid: c9fd7be7a707f18488eb53094b95c8c8, type: 3}
+  - {fileID: 8482797763844370899, guid: 45af41de9a397a745a0ccd031eedc1a4, type: 3}
 --- !u!4 &1923814280
 Transform:
   m_ObjectHideFlags: 0

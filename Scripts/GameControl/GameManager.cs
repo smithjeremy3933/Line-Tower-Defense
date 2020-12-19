@@ -94,7 +94,7 @@ namespace LTD.Controller
         {
             for (int i = 0; i < numberOfWaves; i++)
             {
-                waves.Add(new Wave(10));
+                waves.Add(new Wave(2));
             }
         }
     }

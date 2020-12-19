@@ -18,7 +18,7 @@ namespace LTD.Towers
                 gameObject.name = "Tower (" + tower.node.xIndex + "," + tower.node.yIndex + ")";
                 gameObject.transform.position = tower.position;
                 m_tower = tower;
-                cost = tower.cost;
+                cost = tower.Cost;
             }
         }
     }

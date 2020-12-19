@@ -1,5 +1,4 @@
 ﻿using LTD.Database;
-using LTD.EnemyUnits;
 using LTD.Map;
 using LTD.Towers;
 using UnityEngine;
@@ -36,7 +35,7 @@ namespace LTD.Controller
                 {
                     Tower tower = towerDatabase.GetTowerFromNode(node);
                     TowerHealth towerHealth = towerDatabase.GetTowerHealth(tower);
-                    Debug.Log(tower.health);
+                    Debug.Log(tower.Health);
                     selectedObject = towerHealth.gameObject;
                     Debug.Log("Selected GameObject " + selectedObject.name);
                 }
